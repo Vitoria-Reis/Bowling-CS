@@ -5,35 +5,45 @@ namespace BowlingCore
     public class BowlingScore
     {
         private int[] rolls = new int[21];
-        private int JogadaAtual = 0;
+        private int playcurrent = 0;
         
        public void roll(int pins)
        {
-           rolls[this.JogadaAtual++] = pins;
+           rolls[this.playcurrent++] = pins;
        }
         public double Score()
         {
             int score = 0;
-            int Frames = 0;
+            int FrameIndex = 0;
             for(int Frame = 0; Frame < 10; Frame++)
             {
-                    if(this.rolls[Frames] == 10)
+                    if(Strike(FrameIndex))
                     {
-                        score += 10 + this.rolls[Frames +1] + this.rolls[Frames +2];
-                        Frames ++;
+                        score += this.rolls[FrameIndex] + this.rolls[FrameIndex +1] + this.rolls[FrameIndex +2];
+                        FrameIndex ++;
                     }
-                    else if(this.rolls[Frames] + this.rolls[Frames + 1] == 10)
+                    else if(Spare(FrameIndex))
                     {
-                        score += 10 + this.rolls[Frames +2];
-                        Frames += 2;
+                        score += 10 + this.rolls[FrameIndex +2];
+                        FrameIndex ++;
+                        FrameIndex ++;
                     }
                     else
                     {
-                        score += this.rolls[Frames] + this.rolls[Frames + 1];
-                        Frames += 2;
+                        score += this.rolls[FrameIndex] + this.rolls[FrameIndex + 1];
+                        FrameIndex ++;
+                        FrameIndex ++;
                     }
             }
             return score;
+        }
+        private Boolean Spare(int FrameIndex)
+        {
+            return this.rolls[FrameIndex] + this.rolls[FrameIndex + 1] == 10;
+        }
+        private Boolean Strike(int FrameIndex)
+        {
+            return this.rolls[FrameIndex] == 10;
         }
     }
 }
